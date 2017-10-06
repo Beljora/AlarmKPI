@@ -1,0 +1,11 @@
+clear, clc;
+dPb = input('Enter desired probability of breakage: ');
+bR = input('Enter bR distribution parameter: ');
+BLR = input('Enter BetaLR distribution parameter: ');
+tol = input('Enter Convergence Tolerance: ');
+fun = @(DL) (1 - exp(-(DL./(exp(-bR./BLR))).^BLR))-dPb;
+DL0 = [1 100];
+hroot = hybrid(fun, DL0, tol);
+options = optimset('Display','iter','TolX',tol);
+froot = fzero (fun,DL0,options);
+fprintf('Hybrid function: %2.4f\n fzero function: %2.4f\n Difference: %2.4f\n',hroot,froot,abs(hroot-froot));
